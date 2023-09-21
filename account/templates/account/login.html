@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+
+{% load placeholders %}
+{% block title %}Login{% endblock title %}
+{% block content %}
+    <style>
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .form-signin {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+        }
+
+        .form-signin .form-floating:focus-within {
+        z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+        margin-bottom: 10px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        }
+
+        
+    </style>
+
+    <main class="form-signin">
+        <form method="post">
+            {% csrf_token %}
+
+        <h1 class="h3 mb-3 fw-normal text-center">Sign-in</h1>
+    
+        <div class="form-floating">
+            <input type="email" class="form-control" id="floatingInput" name="email" placeholder="Email" value="{{request.POST.email}}">
+            <label for="floatingInput">Email Address</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" value="">
+            <label for="floatingPassword">Password</label>
+        </div>
+
+        {% for field in login_form %}
+                <p>
+                    {% for error in field.errors %}
+                    <b style="color: rgb(175, 23, 23);">{{error}}</b>
+                    {% endfor %}
+                </p>
+    
+            {% endfor %}
+            {% if login_form.non_field_errors %}
+                <div style="color: rgb(175, 23, 23);">
+                    <b>{{login_form.non_field_errors}}</b>
+                </div>
+            {% endif %}
+    
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+        </form>
+        <p class="text-center mt-2">
+            Don't have an account?
+            <a class="text-decoration-none" href="{% url 'register' %}">Register here</a>
+        </p>
+        <p class="text-center">
+            <a class="text-decoration-none" href="{% url 'password_reset' %}">Forgot Password?</a>
+        </p>
+    </main>
+  
+
+{% endblock content %}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load placeholders %}
+{% block title %}Registration{% endblock title %}
+{% block content %}
+<style>
+    .header {
+        margin-bottom: 20px;
+    }
+
+    .form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+    }
+
+    .form-signin .form-floating:focus-within {
+    z-index: 2;
+    }
+
+    .form-signin input[type="email"] {
+    margin-bottom: 10px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    }
+
+    .form-signin input[type="text"] {
+    margin-bottom: 10px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    }
+
+    .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    }
+</style>
+<main class="form-signin">
+    <form method="post">
+        {% csrf_token %}
+
+    <h5 class="h3 mb-3 fw-normal text-center">Register an account with Us!</h5>
+
+    <div class="form-floating">
+        <input type="email" class="form-control" id="floatingInput" placeholder="Email Address"name="email" required autofocus>
+        <label for="floatingInput">Email Address</label>
+    </div>
+    <div class="form-floating">
+        <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Username" required>
+        <label for="floatingInput">Username</label>
+    </div>
+    <div class="form-floating">
+        <input type="password" class="form-control" id="floatingPassword1" name="password2" required placeholder="Password1">
+        <label for="floatingPassword1">Password</label>
+    </div>
+    <div class="form-floating">
+        <input type="password" class="form-control" id="floatingPassword2" name="password1" required placeholder="Password2">
+        <label for="floatingPassword2">Repeat password again</label>
+    </div>
+
+    {% for field in form %}
+            <p>
+                {% for error in field.errors %}
+                    <b style="color: rgb(175, 23, 23);">{{error}}</b>
+                {% endfor %}
+            </p>
+
+
+        {% endfor %}
+        {% if update_form.non_field_errors %}
+            <div style="color: rgb(175, 23, 23);">
+                <b>{{update_form.non_field_errors}}</b>
+            </div>
+        {% endif %}
+            
+    <p class="text-center text-success">{{success_message}}</p>
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Create Account</button>
+    </form>
+    <p class="text-center">
+        Already have an account?
+        <a href="{% url 'login' %}" class="text-decoration-none">Sign-in</a>
+    </p>
+</main>
+
+{% endblock content %}

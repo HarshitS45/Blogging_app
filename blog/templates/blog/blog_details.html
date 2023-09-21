@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block title %} Blog Details {% endblock title %}
+
+{% block content %}
+<style>
+    .container {
+        color: #333;
+    }
+
+    .header {
+        margin-bottom: 20px;
+    }
+
+    .card {
+        max-width: 900px;
+        min-width: 200px;
+        /* margin: 0 auto; */
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .rightside-posts {
+        position: absolute;
+        right: 20px;
+        top: 80px;
+    }
+
+    .delete {
+        position: absolute;
+        right: 10px;
+        padding: 7px 10px;
+    }
+
+    .card-page {
+        width: 50vw;
+    }
+
+    @media (max-width: 396px) {
+        .update {
+            margin-bottom: 20px;
+        }
+
+        .delete {
+            display: block;
+            margin-top: -15px;
+            margin-bottom: 10px;
+            left: 30px;
+            width: fit-content;
+        }
+    }
+
+    @media (max-width: 991px) {
+    .rightside-posts {
+        display: none;
+    }
+
+    .footer {
+        margin-top: 0;
+    }
+
+    .card-page {
+        width: 90vw;
+        margin: 0 auto;
+        /* background-color: red; */
+    }
+    }
+
+    @media (min-width: 992px) {
+        .footer {
+        clear: both;
+        position: relative;
+        margin-top: 400px;
+    }
+
+    }
+</style>
+
+<div class="parent" style="margin-top: 10rem;margin-bottom: 20rem;">
+    <div class="container">
+        <div class="row">
+            <div class="card card-page py-3 mt-2 col-lg-9">
+                {% if blog_details.image %}
+                <img src="{{blog_details.image.url}}" class="card-img-top">
+                {% endif %}
+                <p class="text-muted px-3 pt-3">
+                    Updated on {{blog_details.date_updated}} by {{blog_details.author|title}}
+                </p>
+                <div class="card-body">
+                  <h1 class="card-title">{{blog_details.title}}</h1>
+                  <p class="card-text">{{blog_details.body|safe}}</p>
+                    {% if blog_details.author == request.user %}
+                    <a href="{% url 'blog:update_blog_post' blog_details.slug %}" class="update btn btn-primary">Update Blog Post</a>
+                    <a href="{% url 'blog:delete_blog_post' blog_details.slug %}" class="delete btn" style="background-color: red;color: #fff;border: none;">Delete Blog Post</a>
+                    {% endif %}
+                </div>
+              </div>
+        </div>
+    </div>
+    <div>
+        {% include 'blog/snippets/blog_side_posts_snippet.html' %}
+    </div>
+    
+</div>
+{% endblock content %}

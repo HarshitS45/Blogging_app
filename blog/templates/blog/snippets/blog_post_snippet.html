@@ -1,0 +1,73 @@
+<style type="text/css">
+	.container {
+        color: #333;
+        
+    }
+    .card, .container{
+		width: 50vw;
+	}
+	.card-body{
+		padding: 20px;
+	}
+    
+    .no-italics {
+        font-style: normal;
+    }
+    @media (max-width:991px) {
+        .container {
+            width: 100vw;
+            /* background-color: blue; */
+        }
+        
+        .blog-post {
+            /* background-color: red; */
+            width: 90vw;
+            margin: 0 auto;
+        }
+
+        /* .card-img-top {
+            height: 10px;
+        } */
+    }
+</style>
+
+{% if blog_post %}
+<div class="container">
+	<div class="row">
+		<!-- Blog Post -->
+		<div class="card m-auto pt-3 blog-post">
+			<a href="{% url 'blog:blog_details' post.slug %}">
+                {% if blog_post.image %}
+                    <img class="card-img-top img-fluid" src="{{blog_post.image.url}}" style="max-height: 85vh;">
+                {% endif %}
+			</a>
+            <div class="text-muted px-3 pt-3">
+                Updated on {{blog_post.date_updated}} by {{blog_post.author|title}}
+              </div>
+			<div class="card-body mt-2 mb-2">
+				<a href="{% url 'blog:blog_details' post.slug %}" class="text-decoration-none">
+					<h2 class="card-title no-italics">{{blog_post.title}}</h2>
+				</a>
+				<p class="card-text">{{blog_post.body|safe|truncatechars:180}}</p>
+				{% if blog_post.author == request.user %}
+					<a href="{% url 'blog:update_blog_post' blog_post.slug %}" class="btn btn-primary">Update</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% else %}
+
+<div class="container">
+	<div class="row">
+		<div class="card m-auto">
+			<div class="card-body mt-2 mb-2">
+				<h2 class="card-title">No results</h2>
+				<p class="card-text">There were no results matching the search: "{{query}}"</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endif %}

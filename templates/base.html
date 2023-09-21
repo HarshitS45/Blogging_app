@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>
+        {% block title %}{% endblock title %}
+    </title>
+    {% include 'snippets/header.html' %}
+
+    <style>
+        @media (max-width: 991px) {
+            .container-fluid {
+                margin-top: 3rem;
+            }
+    }
+    </style>
+</head>
+<body>
+
+    <div class="main">
+
+        <div class="container-fluid bg-white px-5">
+            <header class="fixed-top" style="background-color: #ECEFF1;">
+              <div class="d-flex flex-column flex-md-row align-items-center pb-3 header">
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                    <span class="fs-4 logo-parent">
+                        <img class="logo" src="{% static 'cover.png' %}" alt="ee">
+                    </span>
+                  </a>
+                  {% with request.resolver_match.url_name as url_name %}
+                  <button class="navbar-toggler d-md-none" type="button" data-mdb-toggle="collapse"
+                data-mdb-target="#navbarToggleExternalContent3" aria-controls="navbarToggleExternalContent3"
+                aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="hamburger d-md-none">
+                        <i class="d-md-none menuIcon fas fa-bars"></i>
+                        <i class="d-md-none closeIcon fa-solid fa-xmark"></i>
+                    </button>
+                </button>
+                    <ul class="nav nav-pills nav-list menu">
+                        <li class="nav-item"><a href="{% url 'home_page' %}" class="nav-link {% if url_name == 'home_page' %}active{% endif %}" aria-current="page">Home</a></li>
+                        {% if request.user.is_authenticated %}
+                        <li class="nav-item"><a href="{% url 'update' %}" class="nav-link {% if url_name == 'update' %}active{% endif %}">Profile</a></li>
+                        <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link {% if url_name == 'logout' %}active{% endif %}">Logout</a></li>
+                        {% else %}
+                        <li class="nav-item"><a href="{% url 'login' %}" class="nav-link {% if url_name == 'login' %}active{% endif %}">Login</a></li>
+                        <li class="nav-item active"><a href="{% url 'register' %}" class="nav-link {% if url_name == 'register' %}active{% endif %}">Register</a></li>
+                        {% endif %}
+                    </ul>
+                    {% if request.user.is_authenticated %}
+                        <li class="mt-2 fw-bold ps-2 welcome-msg" style="color: green;list-style-type: none;">Welcome, {{ request.user.username|title }}🙂.</li>
+                    {% endif %}
+                  {% endwith %}
+              </div>
+
+              {% with request.resolver_match.url_name as url_name %}
+                {% if url_name == 'home_page' %}
+                    <div class="search-bar mt-sm-2 mr-2 my-2">
+                        <form method="get">
+                            <input type="search" name="query" id="id_query" placeholder="Search..." class="form-control" value="{{request.GET.query}}">
+                            <i class="fas fa-search text-dark"></i>
+                        </form>
+                    </div>
+                {% endif %}
+              {% endwith %}
+            </header>
+          </div>
+
+        <div class="container-fluid content" style="margin-top: 5rem;">
+            <!-- Body_block -->
+            {% block content %}
+            {% endblock content %}
+            <!-- End body_block -->
+        </div>
+    
+    </div>
+
+    
+
+</body>
+
+<footer class="bg-da" style="background-color: #ECEFF1; color: #333;position:relative;margin-top: 200px;">
+    {% include 'snippets/footer.html' %}
+</footer>
+<script>
+    const menu = document.querySelector(".menu");
+    const menuItems = document.querySelectorAll(".menuItem");
+    const hamburger= document.querySelector(".hamburger");
+    const closeIcon= document.querySelector(".closeIcon");
+    const menuIcon = document.querySelector(".menuIcon");
+    
+    function toggleMenu() {
+      if (menu.classList.contains("showMenu")) {
+        menu.classList.remove("showMenu");
+        closeIcon.style.display = "none";
+        menuIcon.style.display = "block";
+      } else {
+        menu.classList.add("showMenu");
+        closeIcon.style.display = "block";
+        menuIcon.style.display = "none";
+      }
+    }
+    
+    hamburger.addEventListener("click", toggleMenu);
+    
+    </script>
+</html>

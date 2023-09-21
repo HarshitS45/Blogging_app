@@ -1,0 +1,35 @@
+<style>
+    .no-italics {
+        font-style: normal;
+    }
+    @media (max-width: 1068px) {
+        .side-cards-parent {
+            /* background-color: red; */
+            margin-left: -20px;
+    }
+    }
+
+</style>
+
+<div class="rightside-posts col-lg-3 d-lg-flex d-none flex-column mt-0" style="border-radius: 10px;margin-top:-40px;">
+    <div style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;width: fit-content;background-color: #F7F9F9;border: none;" class="px-4 pt-4 side-cards-parent">
+        <h5 class="suggestions mb-4 no-italics" style="color: black;white-space: nowrap;">You might be interested in</h5>
+        {% for post in blog_post %}
+        <div class="blog-post-container my-4">
+            <div class="card d-flex flex-column" style="width: 20vw;height: auto;border-radius: 10px;">
+                <!-- <a href="{% url 'blog:blog_details' post.slug %}">
+                    {% if post.image %}
+                        <img class="img-fluid card-img-top" src="{{post.image.url}}">
+                    {% endif %}
+                </a> -->
+                <div class="card-body mt-2 mb-2">
+                    <a href="{% url 'blog:blog_details' post.slug %}" class="text-decoration-none">
+                        <h3 class="card-title" style="font-style: normal;">{{post.title}}</h3>
+                    </a>
+                    <p class="card-text" style="font-style: normal;">{{post.body|safe|truncatechars:100}}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>

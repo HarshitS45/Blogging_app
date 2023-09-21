@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load placeholders %}
+{% block title %}Profile{% endblock title %}
+{% block content %}
+    <style>
+        .header {
+            margin-bottom: 20px;
+        }
+        .form-signin {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+        }
+
+        .form-signin .form-floating:focus-within {
+        z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+        margin-bottom: 10px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="username"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        }
+
+        .blog-posts {
+            max-width: 500px;
+            width: 100%;
+            margin: auto;
+        }
+
+        .list-group-item {
+            max-width: 600px;
+            /* width: 450px; */
+            position: relative;
+            min-width: 100px;
+            word-wrap: break-word;
+        }
+    </style>
+    <main class="form-signin">
+        <form method="post">
+            {% csrf_token %}
+
+        <h1 class="h3 mb-3 fw-normal text-center">Update Account Details</h1>
+    
+        <div class="form-floating">
+            <input type="email" class="form-control" id="floatingInput" placeholder="Email Address" name="email" value="{{request.user.email}}">
+            <label for="floatingInput">Email Address</label>
+        </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Username" name="username" value="{{request.user.username}}">
+            <label for="floatingInput">Username</label>
+        </div>
+
+        {% for field in update_form %}
+                <p>
+                    {% for error in field.errors %}
+                        bp style="color: rgb(175, 23, 23);">{{error}}</b>
+                    {% endfor %}
+                </p>
+
+    
+            {% endfor %}
+            {% if update_form.non_field_errors %}
+                <div style="color: rgb(175, 23, 23);">
+                    <b>{{update_form.non_field_errors}}</b>
+                </div>
+            {% endif %}
+                
+        <p class="text-center" style="color: #155724;">{{success_message}}</p>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Save changes</button>
+        <div class="text-center mt-2">
+            <a href="{% url 'password_change' %}">Change passsword</a>
+        </div>
+        </form>
+    </main>
+
+
+    <div class="container mt-4 p-4">
+        <div class="row">
+            <div class="blog-posts bg-dangeer" style="width: 100%;">
+                <h2 class="mb-1 fw-bolder">Blog Posts({{blog_posts|length}}):</h2>
+
+                {% if blog_posts %}
+                    <ul class="list-group">
+                        {% for blog_post in blog_posts %}
+                        <a class="my-3" href="{% url 'blog:blog_details' blog_post.slug %}" style="text-decoration: none;background-color: #36404F;border:none;border-radius: 10px;padding: 10px 20px;">
+                            <p class="fw-bold text-white d-inline">{{ forloop.counter }}</p>
+                                <li class="text-white list-group-item mb-3 d-inline" style="background-color: #36404F;">
+                                    {{blog_post}}</li>
+                            </a>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <h5>No blog post. Create a blog post <a href="{% url 'blog:create_blog_post' %}">here</a></h5>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
